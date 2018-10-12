@@ -8,14 +8,14 @@ import { NavLink } from 'react-router-dom';
 
 const styles = {
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   grow: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20,
+    marginRight: 20
   },
   link: {
     color: 'inherit'
@@ -31,13 +31,16 @@ function Navbar(props) {
           <Typography variant="title" color="inherit" className={classes.grow}>
             React Trello
           </Typography>
-          <NavLink to="/sign-in" className={classes.link}><Button color="inherit">Sign In</Button></NavLink>
-          <NavLink to="/sign-up" className={classes.link}><Button color="inherit">Sign Up</Button></NavLink>
+          <Button component={NavLink} to="/home/sign-in" color="inherit">
+            Sign In
+          </Button>
+          <Button component={NavLink} to="/home/sign-up" color="inherit">
+            Sign Up
+          </Button>
         </Toolbar>
       </AppBar>
     </div>
   );
 }
-
 
 export default withStyles(styles)(Navbar);

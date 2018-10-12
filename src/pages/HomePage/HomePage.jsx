@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { renderRoutes } from 'react-router-config'
 import Navbar from './components/Navbar';
-
+import SignInContainer from './pages/SignIn';
+import { Route } from 'react-router-dom';
+import SignUpContainer from './pages/SignUp';
 class HomePage extends Component {
   render() {
-    const { route } = this.props;
+    const { match } = this.props;
     return (
       <div>
-        <Navbar/>
-        {renderRoutes(route.routes)}
+        <Navbar />
+        <Route path={`${match.path}/sign-in`} component={SignInContainer} />
+        <Route path={`${match.path}/sign-up`} component={SignUpContainer} />
       </div>
     );
   }

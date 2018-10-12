@@ -1,6 +1,6 @@
-import routes from './routes';
+import sagas from './sagas';
+import reducers from './reducers';
+import SignInContainer from './SignInContainer';
 
-export {
-    routes
-}
-
+export default SignInContainer;
+export { sagas, reducers };

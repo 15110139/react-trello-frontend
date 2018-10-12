@@ -8,14 +8,18 @@ export default function Draggable(Component) {
       return (
         <ReactDraggable DraggableId={DraggableId}>
           {provided => {
-            const EnhancedComponent = React.cloneElement(Component, {
-              innerRef: provided.innerRef,
-              ...provided.DraggableProps
-            }, [provided.placeholder])
-            return (<EnhancedComponent/>)}
-        }
+            const EnhancedComponent = React.cloneElement(
+              Component,
+              {
+                innerRef: provided.innerRef,
+                ...provided.DraggableProps
+              },
+              [provided.placeholder]
+            );
+            return <EnhancedComponent />;
+          }}
         </ReactDraggable>
       );
     }
-  }
+  };
 }

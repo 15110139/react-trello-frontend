@@ -1,13 +1,8 @@
-import React, { Component } from 'react';
-import { renderRoutes } from 'react-router-config';
-
-class App extends Component {
+import React from 'react';
+import Routers from './routers';
+class App extends React.Component {
   render() {
-    const { route } = this.props;
-    return (
-      <React.Fragment>
-        {renderRoutes(route.routes)}
-      </React.Fragment>);
+    return <Routers />;
   }
 }
 

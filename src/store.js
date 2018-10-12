@@ -10,18 +10,15 @@ const routeMiddleware = routerMiddleware(history);
 const sagaMiddleware = createSagaMiddleware();
 
 function configureStore() {
-    const middlewares = [sagaMiddleware, routeMiddleware];
-    const enhancers = [
-        applyMiddleware(...middlewares)
-    ];
-    const store = createStore(connectRouter(history)(reducer), ...enhancers);
-    return store;
+  const middlewares = [sagaMiddleware, routeMiddleware];
+  const enhancers = [applyMiddleware(...middlewares)];
+  return createStore(connectRouter(history)(reducer), ...enhancers);
 }
 
 const store = configureStore();
 
 sagas.forEach(saga => {
-    sagaMiddleware.run(saga);
+  sagaMiddleware.run(saga);
 });
 
 export { store, history };

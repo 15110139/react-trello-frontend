@@ -1,7 +1,7 @@
-import { Draggable } from 'react-beautiful-dnd'
-import React from 'react'
+import { Draggable } from 'react-beautiful-dnd';
+import React from 'react';
 import { DndContext } from '../constants';
-const grid = 8
+const grid = 8;
 
 const getItemStyle = (draggableStyle, isDragging) => ({
   // some basic styles to make the items look a bit nicer
@@ -13,13 +13,11 @@ const getItemStyle = (draggableStyle, isDragging) => ({
   background: isDragging ? '#31d600' : 'white',
 
   // styles we need to apply on draggables
-  ...draggableStyle,
-})
+  ...draggableStyle
+});
 
 class Card extends React.Component {
-  onCardClick = (event) => {
-
-  }
+  onCardClick = event => {};
 
   render() {
     const { title, id } = this.props;
@@ -38,8 +36,8 @@ class Card extends React.Component {
           </div>
         )}
       </Draggable>
-    )
+    );
   }
 }
 
-export default Card
+export default Card;

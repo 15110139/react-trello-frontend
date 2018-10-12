@@ -1,3 +1,6 @@
-export default function rootReducer(state , action) {
-  return state;
-}
+import { reducers as homePageReducers } from './pages/HomePage';
+import { combineReducers } from 'redux';
+
+export default combineReducers({
+  ...homePageReducers
+});

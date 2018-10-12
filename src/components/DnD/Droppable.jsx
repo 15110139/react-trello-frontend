@@ -8,14 +8,18 @@ export default function Droppable(Component) {
       return (
         <ReactDroppable droppableId={droppableId}>
           {provided => {
-            const EnhancedComponent = React.cloneElement(Component, {
-              innerRef: provided.innerRef,
-              ...provided.droppableProps
-            }, [provided.placeholder])
-            return (<EnhancedComponent/>)}
-        }
+            const EnhancedComponent = React.cloneElement(
+              Component,
+              {
+                innerRef: provided.innerRef,
+                ...provided.droppableProps
+              },
+              [provided.placeholder]
+            );
+            return <EnhancedComponent />;
+          }}
         </ReactDroppable>
       );
     }
-  }
+  };
 }
