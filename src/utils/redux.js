@@ -65,7 +65,7 @@ function createSelectorsA(context, keys) {
   return keys.map(key => {
     return createSelector(
       stateSelector,
-      state => (isArray(key) ? state.getIn(key) : state.get(key))
+      _state => (isArray(key) ? _state.getIn(key) : _state.get(key))
     );
   });
 }

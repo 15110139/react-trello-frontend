@@ -14,6 +14,7 @@ class TextInput extends Component {
       title,
       field,
       form: { touched, errors },
+      floatingLabel = true,
       ...rest
     } = this.props;
     const { name } = field;
@@ -21,9 +22,9 @@ class TextInput extends Component {
       <FormControl
         margin="dense"
         error={touched[name] && !!errors[name]}
-        fullWidth
+        {...rest}
       >
-        <InputLabel htmlFor={name}>{title}</InputLabel>
+        {floatingLabel && <InputLabel htmlFor={name}>{title}</InputLabel>}
         <Input {...field} {...rest} />
         {touched[name] &&
           errors[name] && <FormHelperText>{errors[name]}</FormHelperText>}

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="reselect" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/node_modules/reselect" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/node_modules/reselect" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>
