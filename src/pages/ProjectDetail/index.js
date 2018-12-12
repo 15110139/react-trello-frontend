@@ -1,7 +1,7 @@
-import ProjectDetailContainer from './ProjectDetailContainer';
+import ProjectDetail from './ProjectDetail';
 import sagas from './sagas';
 import reducers from './reducers';
 
-export default ProjectDetailContainer;
+export default ProjectDetail;
 
 export { sagas, reducers };

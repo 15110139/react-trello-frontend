@@ -39,7 +39,7 @@ export class ListState extends Record({
 
 export class TaskState extends Record({
   data: Map(),
-  listIds: List()
+  tasksIds: List()
 }) {}
 
 export class ProjectDetailState extends Record({

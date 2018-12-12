@@ -184,39 +184,39 @@ class DashboardNavbar extends React.Component {
             >
               React Trello
             </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <Input
-                placeholder="Search…"
-                disableUnderline
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput
-                }}
-              />
-            </div>
+            {/*<div className={classes.search}>*/}
+            {/*<div className={classes.searchIcon}>*/}
+            {/*<SearchIcon />*/}
+            {/*</div>*/}
+            {/*<Input*/}
+            {/*placeholder="Search…"*/}
+            {/*disableUnderline*/}
+            {/*classes={{*/}
+            {/*root: classes.inputRoot,*/}
+            {/*input: classes.inputInput*/}
+            {/*}}*/}
+            {/*/>*/}
+            {/*</div>*/}
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <IconButton color="inherit">
-                <Badge
-                  className={classes.margin}
-                  badgeContent={4}
-                  color="secondary"
-                >
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-              <IconButton color="inherit">
-                <Badge
-                  className={classes.margin}
-                  badgeContent={17}
-                  color="secondary"
-                >
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
+              {/*<IconButton color="inherit">*/}
+              {/*<Badge*/}
+              {/*className={classes.margin}*/}
+              {/*badgeContent={4}*/}
+              {/*color="secondary"*/}
+              {/*>*/}
+              {/*<MailIcon />*/}
+              {/*</Badge>*/}
+              {/*</IconButton>*/}
+              {/*<IconButton color="inherit">*/}
+              {/*<Badge*/}
+              {/*className={classes.margin}*/}
+              {/*badgeContent={17}*/}
+              {/*color="secondary"*/}
+              {/*>*/}
+              {/*<NotificationsIcon />*/}
+              {/*</Badge>*/}
+              {/*</IconButton>*/}
               <IconButton
                 aria-owns={isMenuOpen ? 'material-appbar' : null}
                 aria-haspopup="true"

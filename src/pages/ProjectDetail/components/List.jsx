@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { toJS } from 'utils/toJS';
 import { listDataSelector } from '../selectors';
+import AddCard from './AddCard';
 
 class List extends React.Component {
   onCreateCard = () => {};
@@ -51,7 +52,7 @@ class List extends React.Component {
                   );
                 }}
               </Droppable>
-              <AddCard>+ Add another card</AddCard>
+              <AddCard listId={_id} projectId={projectId} />
             </Container>
           );
         }}
@@ -60,7 +61,7 @@ class List extends React.Component {
   }
 }
 
-const Title = styled.div`
+export const Title = styled.div`
   background-color: #dfe3e6;
   padding: 10px 10px 0 20px;
   margin: 5px 5px 0 5px;
@@ -72,18 +73,7 @@ const Title = styled.div`
 
 const Container = styled.div``;
 
-const AddCard = styled.div`
-  margin: 0 5px;
-  padding: 10px 10px 10px 20px;
-  background-color: #dfe3e6;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px -1px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  &:hover {
-    background-color: gainsboro;
-  }
-`;
-
-const CardList = styled.div`
+export const CardList = styled.div`
   background-color: #dfe3e6;
   width: 220px;
   padding: 10px;

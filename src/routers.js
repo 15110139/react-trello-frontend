@@ -20,8 +20,9 @@ export default class Routers extends Component {
           <Route path="/sign-up" component={SignUp} />
           <Route exact path="/projects" component={protectRoute(ProjectList)} />
           <Route path="/projects/:projectId" component={ProjectDetail} />
-          {/*<Route path="/404" component={NotFound} />*/}
-          {/*<Redirect to="/404" />*/}
+          <Redirect from="/" to="/sign-in" />
+          <Route path="/404" component={NotFound} />
+          <Redirect to="/404" />
         </Switch>
       </React.Fragment>
     );

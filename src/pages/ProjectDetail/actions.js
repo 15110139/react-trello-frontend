@@ -6,6 +6,16 @@ const {
   loadProjectDetailFail
 } = createAsyncAction('loadProjectDetail', 'LOAD_PROJECT_DETAIL');
 
+const { createList, createListSuccess, createListFail } = createAsyncAction(
+  'createList',
+  'CREATE_LIST'
+);
+
+const { createTask, createTaskSuccess, createTaskFail } = createAsyncAction(
+  'createTask',
+  'CREATE_TASK'
+);
+
 const { moveTask, moveTaskSuccess, moveTaskFail } = createAsyncAction(
   'moveTask',
   'MOVE_TASK'
@@ -28,5 +38,11 @@ export {
   moveTask,
   moveTaskFail,
   moveTaskSuccess,
-  resetProjectDetail
+  resetProjectDetail,
+  createList,
+  createListSuccess,
+  createListFail,
+  createTask,
+  createTaskSuccess,
+  createTaskFail
 };

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Droppable, DragDropContext } from 'react-beautiful-dnd';
 import { DndContext } from '../constants';
 import List from './List';
+import AddList from './AddList';
 
 const Container = styled.div`
   display: flex;
@@ -80,20 +81,23 @@ class ProjectBoard extends React.Component {
           onDragEnd={this.onDragEnd}
         >
           {(provided, snapshot) => (
-            <Container
-              innerRef={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              {listIds.map((listId, index) => (
-                <List
-                  key={listId}
-                  listId={listId}
-                  projectId={projectId}
-                  index={index}
-                />
-              ))}
-              {provided.placeholder}
-            </Container>
+            <React.Fragment>
+              <Container
+                innerRef={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {listIds.map((listId, index) => (
+                  <List
+                    key={listId}
+                    listId={listId}
+                    projectId={projectId}
+                    index={index}
+                  />
+                ))}
+                {provided.placeholder}
+                <AddList projectId={projectId} />
+              </Container>
+            </React.Fragment>
           )}
         </Droppable>
       </DragDropContext>

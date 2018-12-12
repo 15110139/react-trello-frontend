@@ -13,7 +13,13 @@ import {
   loadProjectDetail,
   loadProjectDetailSuccess,
   loadProjectDetailFail,
-  resetProjectDetail
+  resetProjectDetail,
+  createList,
+  createListFail,
+  createListSuccess,
+  createTask,
+  createTaskSuccess,
+  createTaskFail
 } from './actions';
 import ErrorState from 'services/models/ErrorState';
 import { Map, List } from 'immutable';
@@ -23,7 +29,7 @@ const projectDetailReducers = [
   {
     on: loadProjectDetail,
     reducer: (state, action) => {
-      const { projectId } = action.payload;
+      const projectId = action.payload;
       return state
         .mergeIn([projectId], initialProjectDetailState)
         .mergeIn([projectId], {
@@ -91,10 +97,12 @@ const projectDetailReducers = [
           ),
           data: lists.reduce((accumulator, list) => {
             const { _id } = list;
-            list.tasks = sortBy(
-              tasks.filter(task => task.listId === _id),
-              task => task.position
-            ).map(task => task._id);
+            list.tasks = List(
+              sortBy(
+                tasks.filter(task => task.listId === _id),
+                task => task.position
+              ).map(task => task._id)
+            );
             const immutableList = new ListDataState(list);
             return accumulator.get(_id)
               ? accumulator.merge(_id, immutableList)
@@ -123,4 +131,84 @@ const projectDetailReducers = [
   }
 ];
 
-export default createReducers(context, projectDetailReducers, initalState);
+const listReducers = [
+  {
+    on: createList,
+    reducer: (state, action) => {
+      const { projectId } = action.payload;
+      return state.mergeIn([projectId], {
+        action: action.type
+      });
+    }
+  },
+  {
+    on: createListSuccess,
+    reducer: (state, action) => {
+      const { projectId, _id } = action.payload;
+      return state
+        .mergeIn([projectId], {
+          action: action.type
+        })
+        .updateIn([projectId, 'lists', 'listIds'], listIds => listIds.push(_id))
+        .setIn(
+          [projectId, 'lists', 'data', _id],
+          new ListDataState(action.payload)
+        );
+    }
+  },
+  {
+    on: createListFail,
+    reducer: (state, action) => {
+      const { projectId, err } = action.payload;
+      return state.mergeIn([projectId], {
+        action: action.type,
+        error: new ErrorState(err)
+      });
+    }
+  }
+];
+
+const taskReducers = [
+  {
+    on: createTask,
+    reducer: (state, action) => {
+      const { projectId } = action.payload;
+      return state.mergeIn([projectId], {
+        action: action.type
+      });
+    }
+  },
+  {
+    on: createTaskSuccess,
+    reducer: (state, action) => {
+      const { projectId, _id, listId } = action.payload;
+      return state
+        .mergeIn([projectId], {
+          action: action.type
+        })
+        .updateIn([projectId, 'lists', 'data', listId, 'tasks'], taskIds =>
+          taskIds.push(_id)
+        )
+        .setIn(
+          [projectId, 'tasks', 'data', _id],
+          new TaskDataState(action.payload)
+        );
+    }
+  },
+  {
+    on: createTaskFail,
+    reducer: (state, action) => {
+      const { projectId, err } = action.payload;
+      return state.mergeIn([projectId], {
+        action: action.type,
+        error: new ErrorState(err)
+      });
+    }
+  }
+];
+
+export default createReducers(
+  context,
+  [...projectDetailReducers, ...listReducers, ...taskReducers],
+  initalState
+);
