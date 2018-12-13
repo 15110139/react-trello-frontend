@@ -9,6 +9,10 @@ class ListService extends RestAPIClient {
   createList = body => {
     return this.post('/createNewList', body);
   };
+
+  moveList = body => {
+    return this.put('/moveList', body);
+  };
 }
 
 export const listService = new ListService();

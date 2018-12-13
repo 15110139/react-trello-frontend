@@ -19,7 +19,14 @@ import {
   createListSuccess,
   createTask,
   createTaskSuccess,
-  createTaskFail
+  createTaskFail,
+  moveTask,
+  revertMoveTask,
+  moveTaskFail,
+  moveTaskSuccess,
+  moveList,
+  moveListSuccess,
+  moveListFail
 } from './actions';
 import ErrorState from 'services/models/ErrorState';
 import { Map, List } from 'immutable';
@@ -126,7 +133,10 @@ const projectDetailReducers = [
     on: resetProjectDetail,
     reducer: (state, action) => {
       const { projectId } = action.payload;
-      return state.mergeIn([projectId], initialProjectDetailState);
+      return state.mergeIn([projectId], {
+        action: '',
+        error: null
+      });
     }
   }
 ];
@@ -203,6 +213,105 @@ const taskReducers = [
         action: action.type,
         error: new ErrorState(err)
       });
+    }
+  },
+  {
+    on: moveTask,
+    reducer: (state, action) => {
+      const {
+        projectId,
+        taskId,
+        srcId,
+        desId,
+        srcIndex,
+        desIndex
+      } = action.payload;
+      return state
+        .mergeIn([projectId], {
+          action: action.type
+        })
+        .updateIn([projectId, 'lists', 'data', srcId, 'tasks'], taskIds =>
+          taskIds.delete(srcIndex)
+        )
+        .updateIn([projectId, 'lists', 'data', desId, 'tasks'], taskIds =>
+          taskIds.insert(desIndex, taskId)
+        );
+    }
+  },
+  {
+    on: moveTaskSuccess,
+    reducer: (state, action) => {
+      const { projectId } = action.payload;
+      return state.mergeIn([projectId], {
+        action: action.type
+      });
+    }
+  },
+  {
+    on: moveTaskFail,
+    reducer: (state, action) => {
+      const {
+        projectId,
+        taskId,
+        srcId,
+        desId,
+        srcIndex,
+        desIndex,
+        err
+      } = action.payload;
+      return state
+        .mergeIn([projectId], {
+          action: action.type,
+          error: new ErrorState(err)
+        })
+        .updateIn([projectId, 'lists', 'data', desId, 'tasks'], taskIds =>
+          taskIds.delete(desIndex)
+        )
+        .updateIn([projectId, 'lists', 'data', srcId, 'tasks'], taskIds =>
+          taskIds.insert(srcIndex, taskId)
+        );
+    }
+  },
+  {
+    on: moveList,
+    reducer: (state, action) => {
+      const { listId, srcIndex, desIndex, projectId } = action.payload;
+      return state
+        .mergeIn([projectId], {
+          action: action.type
+        })
+        .updateIn([projectId, 'lists', 'listIds'], listIds => {
+          const targetId = listIds.get(desIndex);
+          return listIds
+            .delete(srcIndex)
+            .insert(listIds.indexOf(targetId), listId);
+        });
+    }
+  },
+  {
+    on: moveListSuccess,
+    reducer: (state, action) => {
+      const { projectId } = action.payload;
+      return state.mergeIn([projectId], {
+        action: action.type
+      });
+    }
+  },
+  {
+    on: moveListFail,
+    reducer: (state, action) => {
+      const { listId, srcIndex, desIndex, projectId, err } = action.payload;
+      return state
+        .mergeIn([projectId], {
+          action: action.type,
+          error: new ErrorState(err)
+        })
+        .updateIn([projectId, 'lists', 'listIds'], listIds => {
+          const targetId = listIds.get(srcIndex);
+          return listIds
+            .filter(id => id !== listId)
+            .insert(listIds.indexOf(targetId), listId);
+        });
     }
   }
 ];

@@ -5,16 +5,24 @@ import projectDetailContainer from './projectDetailContainer';
 class ProjectDetail extends Component {
   componentDidMount() {
     const { dispatchLoadProjectDetail, projectId } = this.props;
-    console.log(projectId);
     dispatchLoadProjectDetail(projectId);
   }
 
   render() {
-    const { listIds, projectId } = this.props;
-    console.log(projectId);
+    const {
+      listIds,
+      projectId,
+      dispatchMoveTask,
+      dispatchMoveList
+    } = this.props;
     return (
-      <div style={{ overflow: 'auto', minHeight: '90vh' }}>
-        <ProjectBoard listIds={listIds} projectId={projectId} />
+      <div style={{ overflow: 'auto', minHeight: '90vh', margin: 10 }}>
+        <ProjectBoard
+          listIds={listIds}
+          projectId={projectId}
+          dispatchMoveTask={dispatchMoveTask}
+          dispatchMoveList={dispatchMoveList}
+        />
       </div>
     );
   }

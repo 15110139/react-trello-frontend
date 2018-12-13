@@ -46,17 +46,20 @@ class AddList extends Component {
     return (
       <ClickAwayListener onClickAway={this.handleClickAway}>
         <Container>
-          <form onSubmit={this.handleFormSubmit}>
+          <form
+            onSubmit={this.handleFormSubmit}
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
             <input
               placeholder={'Add new list'}
               type={'text'}
               style={{
                 fontSize: 14,
                 paddingTop: 8,
-                paddingBottom: 8,
-                float: 'left'
+                paddingBottom: 8
               }}
               value={list}
+              disabled={loading}
               onChange={this.onChange}
             />
             <Button
@@ -64,7 +67,6 @@ class AddList extends Component {
               variant="contained"
               type={'submit'}
               disabled={loading || !list}
-              style={{ float: 'right' }}
             >
               {loading ? <CircularProgress size={18} /> : '+'}
             </Button>

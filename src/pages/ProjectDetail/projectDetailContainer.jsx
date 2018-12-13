@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { toJS } from 'utils/toJS';
 import { get } from 'lodash';
-import { createList, createTask, loadProjectDetail } from './actions';
+import {
+  createList,
+  createTask,
+  loadProjectDetail,
+  moveList,
+  moveTask,
+  resetProjectDetail
+} from './actions';
 import { actionSelector, errorSelector, listIdsSelector } from './selectors';
 
 export default function projectDetailContainer(MyComponent) {
@@ -27,7 +34,10 @@ export default function projectDetailContainer(MyComponent) {
       dispatchLoadProjectDetail: projectId =>
         dispatch(loadProjectDetail(projectId)),
       dispatchCreateList: list => dispatch(createList(list)),
-      dispatchCreateTask: task => dispatch(createTask(task))
+      dispatchCreateTask: task => dispatch(createTask(task)),
+      dispatchMoveTask: req => dispatch(moveTask(req)),
+      dispatchMoveList: req => dispatch(moveList(req)),
+      dispatchResetProjectDetail: () => dispatch(resetProjectDetail())
     };
   };
 

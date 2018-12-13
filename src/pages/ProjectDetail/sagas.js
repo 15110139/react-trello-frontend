@@ -14,12 +14,14 @@ import {
   createListFail,
   createTask,
   createTaskSuccess,
-  createTaskFail
+  createTaskFail,
+  revertMoveTask
 } from './actions';
 import { put, call } from 'redux-saga/effects';
 import { projectService } from 'services/projectService';
 import { listService } from 'services/listService';
 import { taskService } from 'services/taskService';
+import SnackbarManager from '../../components/base/SnackbarManager';
 
 const loadProjectDetailSaga = {
   on: loadProjectDetail,
@@ -67,11 +69,63 @@ const moveListSaga = {
   on: moveList,
   worker: function*(action) {
     try {
-      const res = yield call(listService.moveList, action.payload);
-      yield put(moveListSuccess(res.data));
+      const { listId, srcIndex, desIndex } = action.payload;
+      const res = yield call(listService.moveList, {
+        listId,
+        position: desIndex
+      });
+      yield put(moveListSuccess());
     } catch (err) {
-      const { projectId } = action.payload;
-      yield put(moveListFail({ err, projectId }));
+      const { listId, srcIndex, desIndex, projectId } = action.payload;
+      SnackbarManager.show({
+        message: 'Fail to move list. Please try again!'
+      });
+      yield put(moveListFail({ err, projectId, listId, srcIndex, desIndex }));
+    }
+  }
+};
+
+const moveTaskSaga = {
+  on: moveTask,
+  worker: function*(action) {
+    try {
+      const {
+        projectId,
+        taskId,
+        srcId,
+        desId,
+        srcIndex,
+        desIndex
+      } = action.payload;
+      yield call(taskService.moveTask, {
+        listId: srcId,
+        taskId,
+        position: desIndex
+      });
+      yield put(moveTaskSuccess());
+    } catch (err) {
+      const {
+        projectId,
+        taskId,
+        srcId,
+        desId,
+        srcIndex,
+        desIndex
+      } = action.payload;
+      SnackbarManager.show({
+        message: 'Fail to move task. Please try again!'
+      });
+      yield put(
+        moveTaskFail({
+          err,
+          projectId,
+          taskId,
+          srcId,
+          desId,
+          srcIndex,
+          desIndex
+        })
+      );
     }
   }
 };
@@ -80,5 +134,7 @@ export default createSagas([
   loadProjectDetailSaga,
   createListSaga,
   createTaskSaga,
+  moveListSaga,
+  moveTaskSaga,
   moveListSaga
 ]);

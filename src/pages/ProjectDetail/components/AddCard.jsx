@@ -30,7 +30,10 @@ class AddCard extends Component {
   };
 
   handleClickAway = () => {
-    if (this.state.task) this.createTask();
+    this.setState({
+      toggle: false,
+      task: ''
+    });
   };
 
   componentDidUpdate(prevProps) {
@@ -61,6 +64,7 @@ class AddCard extends Component {
               float: 'left'
             }}
             value={task}
+            disabled={loading}
             onChange={this.onChange}
           />
           <Button

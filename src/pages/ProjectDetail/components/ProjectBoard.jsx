@@ -4,6 +4,9 @@ import { Droppable, DragDropContext } from 'react-beautiful-dnd';
 import { DndContext } from '../constants';
 import List from './List';
 import AddList from './AddList';
+import { isArray, noop, compact, isEmpty } from 'lodash';
+import SnackbarManager from 'components/base/SnackbarManager';
+import { moveListFail } from '../actions';
 
 const Container = styled.div`
   display: flex;
@@ -14,21 +17,16 @@ class ProjectBoard extends React.Component {
     listIds: []
   };
 
-  onTaskMove = (taskId, taskIndex, sourceId, desId, desIndex) => {
-    console.log(taskId, 'taskId');
-    console.log(taskIndex, 'taskIndex');
-    console.log(sourceId, 'sourceId');
-    console.log(desId, 'desId');
-    console.log(desIndex, 'desIndex');
+  onTaskMove = (taskId, srcIndex, srcId, desId, desIndex) => {
+    const { dispatchMoveTask = noop, projectId } = this.props;
+    dispatchMoveTask({ projectId, taskId, srcId, desId, srcIndex, desIndex });
   };
 
-  onListMove = (listId, listIndex, destination) => {
-    console.log(listId, 'listId');
-    console.log(listIndex, 'listIndex');
-    console.log(destination, 'desination');
+  onListMove = (listId, srcIndex, desIndex) => {
+    const { dispatchMoveList = noop, projectId } = this.props;
+    dispatchMoveList({ projectId, listId, srcIndex, desIndex });
   };
 
-  indexFromId(array, id) {}
   onDragEnd = result => {
     const { type } = result;
     switch (type) {
@@ -47,7 +45,6 @@ class ProjectBoard extends React.Component {
 
       case DndContext.CARD: {
         const { destination } = result;
-        console.log(result.source);
         if (destination) {
           const {
             draggableId,
@@ -86,14 +83,15 @@ class ProjectBoard extends React.Component {
                 innerRef={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {listIds.map((listId, index) => (
-                  <List
-                    key={listId}
-                    listId={listId}
-                    projectId={projectId}
-                    index={index}
-                  />
-                ))}
+                {isArray(listIds) &&
+                  compact(listIds).map((listId, index) => (
+                    <List
+                      key={listId}
+                      listId={listId}
+                      projectId={projectId}
+                      index={index}
+                    />
+                  ))}
                 {provided.placeholder}
                 <AddList projectId={projectId} />
               </Container>

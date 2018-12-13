@@ -21,6 +21,8 @@ const { moveTask, moveTaskSuccess, moveTaskFail } = createAsyncAction(
   'MOVE_TASK'
 );
 
+const revertMoveTask = createAction('REVERT_MOVE_TASK');
+
 const { moveList, moveListSuccess, moveListFail } = createAsyncAction(
   'moveList',
   'MOVE_LIST'
@@ -44,5 +46,6 @@ export {
   createListFail,
   createTask,
   createTaskSuccess,
-  createTaskFail
+  createTaskFail,
+  revertMoveTask
 };

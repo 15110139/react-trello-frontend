@@ -7,15 +7,11 @@ import { connect } from 'react-redux';
 import { toJS } from 'utils/toJS';
 import { listDataSelector } from '../selectors';
 import AddCard from './AddCard';
-
+import { isArray, get, compact } from 'lodash';
 class List extends React.Component {
-  onCreateCard = () => {};
-
   render() {
-    const {
-      listData: { _id, name, tasks },
-      projectId
-    } = this.props;
+    const { projectId } = this.props;
+    const { _id, name, tasks } = get(this.props, 'listData', {});
     return (
       <Draggable
         type={DndContext.LIST}
@@ -37,16 +33,17 @@ class List extends React.Component {
                       {...provided.droppableProps}
                       isDraggingOver={snapshot.isDraggingOver}
                     >
-                      {tasks.map((id, index) => {
-                        return (
-                          <Task
-                            key={id}
-                            taskId={id}
-                            projectId={projectId}
-                            index={index}
-                          />
-                        );
-                      })}
+                      {isArray(tasks) &&
+                        compact(tasks).map((id, index) => {
+                          return (
+                            <Task
+                              key={id}
+                              taskId={id}
+                              projectId={projectId}
+                              index={index}
+                            />
+                          );
+                        })}
                       {provided.placeholder}
                     </CardList>
                   );

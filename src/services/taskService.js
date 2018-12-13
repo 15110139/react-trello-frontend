@@ -5,9 +5,14 @@ class TaskService extends RestAPIClient {
     super('task');
   }
 
-  //body: { name, projectId, listId }
+  // body: { name, projectId, listId }
   createTask = body => {
     return this.post('/createNewTask', body);
+  };
+
+  // body: { taskId, listId, position }
+  moveTask = body => {
+    return this.put('/moveTask', body);
   };
 }
 
