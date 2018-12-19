@@ -26,7 +26,13 @@ import {
   moveTaskSuccess,
   moveList,
   moveListSuccess,
-  moveListFail
+  moveListFail,
+  deleteList,
+  deleteListFail,
+  deleteListSuccess,
+  deleteTaskFail,
+  deleteTaskSuccess,
+  deleteTask
 } from './actions';
 import ErrorState from 'services/models/ErrorState';
 import { Map, List } from 'immutable';
@@ -99,8 +105,8 @@ const projectDetailReducers = [
           }, Map())
         }),
         lists: new ListState({
-          listIds: List(lists.map(list => list._id)).sortBy(
-            list => list.position
+          listIds: List(
+            sortBy(lists, list => list.position).map(list => list._id)
           ),
           data: lists.reduce((accumulator, list) => {
             const { _id } = list;
@@ -122,6 +128,7 @@ const projectDetailReducers = [
   {
     on: loadProjectDetailFail,
     reducer: (state, action) => {
+      console.log('here');
       const { projectId } = action.payload;
       return state.mergeIn([projectId], {
         action: action.type,
@@ -168,6 +175,37 @@ const listReducers = [
   },
   {
     on: createListFail,
+    reducer: (state, action) => {
+      const { projectId, err } = action.payload;
+      return state.mergeIn([projectId], {
+        action: action.type,
+        error: new ErrorState(err)
+      });
+    }
+  },
+  {
+    on: deleteList,
+    reducer: (state, action) => {
+      const { projectId } = action.payload;
+      return state.mergeIn([projectId], {
+        action: action.type
+      });
+    }
+  },
+  {
+    on: deleteListSuccess,
+    reducer: (state, action) => {
+      const { projectId, listId, listIndex } = action.payload;
+      return state
+        .mergeIn([projectId], {
+          action: action.type
+        })
+        .deleteIn([projectId, 'lists', 'listIds', listIndex])
+        .deleteIn([projectId, 'lists', 'data', listId]);
+    }
+  },
+  {
+    on: deleteListFail,
     reducer: (state, action) => {
       const { projectId, err } = action.payload;
       return state.mergeIn([projectId], {
@@ -312,6 +350,39 @@ const taskReducers = [
             .filter(id => id !== listId)
             .insert(listIds.indexOf(targetId), listId);
         });
+    }
+  },
+  {
+    on: deleteTask,
+    reducer: (state, action) => {
+      const { projectId } = action.payload;
+      return state.mergeIn([projectId], {
+        action: action.type
+      });
+    }
+  },
+  {
+    on: deleteTaskSuccess,
+    reducer: (state, action) => {
+      const { projectId, listId, taskIndex, taskId } = action.payload;
+      return state
+        .mergeIn([projectId], {
+          action: action.type
+        })
+        .updateIn([projectId, 'lists', 'data', listId, 'tasks'], taskIds =>
+          taskIds.remove(taskIndex)
+        )
+        .deleteIn([projectId, 'tasks', 'data', taskId]);
+    }
+  },
+  {
+    on: deleteTaskFail,
+    reducer: (state, action) => {
+      const { projectId, err } = action.payload;
+      return state.mergeIn([projectId], {
+        action: action.type,
+        error: new ErrorState(err)
+      });
     }
   }
 ];

@@ -5,8 +5,13 @@ import projectDetailContainer from '../projectDetailContainer';
 import { createList, createListSuccess } from '../actions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener/ClickAwayListener';
+import { noop } from 'lodash';
 
 class AddList extends Component {
+  static defaultProps = {
+    dispatchCreateList: noop
+  };
+
   state = {
     list: ''
   };
@@ -48,7 +53,11 @@ class AddList extends Component {
         <Container>
           <form
             onSubmit={this.handleFormSubmit}
-            style={{ display: 'flex', alignItems: 'center' }}
+            style={{
+              display: 'flex',
+              flexFlow: 'row wrap',
+              alignItems: 'center'
+            }}
           >
             <input
               placeholder={'Add new list'}

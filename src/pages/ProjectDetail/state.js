@@ -20,7 +20,8 @@ export class ListDataState extends Record({
   createdAt: '',
   member: List(),
   userId: '',
-  tasks: List()
+  tasks: List(),
+  position: ''
 }) {}
 
 export class ProjectInfoDataState extends Record({

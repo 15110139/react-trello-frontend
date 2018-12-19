@@ -5,7 +5,7 @@ export class ProjectDataState extends Record({
   name: '',
   backgroundUrl: '',
   createdAt: '',
-  member: [],
+  members: [],
   userId: ''
 }) {}
 

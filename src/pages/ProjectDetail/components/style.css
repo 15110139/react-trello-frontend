@@ -1,0 +1,7 @@
+.setting-icon-task {
+  display: none !important;
+}
+
+.task:hover .setting-icon-task {
+  display: block !important;
+}

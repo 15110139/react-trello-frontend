@@ -15,6 +15,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import storage from 'utils/storage';
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const styles = theme => ({
   root: {
@@ -109,6 +112,12 @@ class DashboardNavbar extends React.Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
+  handleSignOut = () => {
+    this.handleMenuClose();
+    storage.set('USER_CREDENTIAL', {});
+    this.props.history.push('/sign-in');
+  };
+
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
@@ -124,7 +133,7 @@ class DashboardNavbar extends React.Component {
         onClose={this.handleMenuClose}
       >
         <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleClose}>My account</MenuItem>
+        <MenuItem onClick={this.handleSignOut}>Sign Out</MenuItem>
       </Menu>
     );
 
@@ -136,30 +145,6 @@ class DashboardNavbar extends React.Component {
         open={isMobileMenuOpen}
         onClose={this.handleMobileMenuClose}
       >
-        <MenuItem>
-          <IconButton color="inherit">
-            <Badge
-              className={classes.margin}
-              badgeContent={4}
-              color="secondary"
-            >
-              <MailIcon />
-            </Badge>
-          </IconButton>
-          <p>Messages</p>
-        </MenuItem>
-        <MenuItem>
-          <IconButton color="inherit">
-            <Badge
-              className={classes.margin}
-              badgeContent={11}
-              color="secondary"
-            >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <p>Notifications</p>
-        </MenuItem>
         <MenuItem onClick={this.handleProfileMenuOpen}>
           <IconButton color="inherit">
             <AccountCircle />
@@ -176,14 +161,19 @@ class DashboardNavbar extends React.Component {
             {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
               <MenuIcon />
             </IconButton> */}
-            <Typography
-              className={classes.title}
-              variant="title"
-              color="inherit"
-              noWrap
+            <Link
+              to={'/projects'}
+              style={{ textDecoration: 'none', color: 'white' }}
             >
-              React Trello
-            </Typography>
+              <Typography
+                className={classes.title}
+                variant="title"
+                color="inherit"
+                noWrap
+              >
+                React Trello
+              </Typography>
+            </Link>
             {/*<div className={classes.search}>*/}
             {/*<div className={classes.searchIcon}>*/}
             {/*<SearchIcon />*/}
@@ -223,25 +213,25 @@ class DashboardNavbar extends React.Component {
                 onClick={this.handleProfileMenuOpen}
                 color="inherit"
               >
-                <AccountCircle />
-              </IconButton>
-            </div>
-            <div className={classes.sectionMobile}>
-              <IconButton
-                aria-haspopup="true"
-                onClick={this.handleMobileMenuOpen}
-                color="inherit"
-              >
                 <MoreIcon />
               </IconButton>
             </div>
+            {/*<div className={classes.sectionMobile}>*/}
+            {/*<IconButton*/}
+            {/*aria-haspopup="true"*/}
+            {/*onClick={this.handleMobileMenuOpen}*/}
+            {/*color="inherit"*/}
+            {/*>*/}
+            {/*<MoreIcon />*/}
+            {/*</IconButton>*/}
+            {/*</div>*/}
           </Toolbar>
         </AppBar>
         {renderMenu}
-        {renderMobileMenu}
+        {/*{renderMobileMenu}*/}
       </div>
     );
   }
 }
 
-export default withStyles(styles)(DashboardNavbar);
+export default withRouter(withStyles(styles)(DashboardNavbar));

@@ -1,19 +1,47 @@
 import React, { Component } from 'react';
-import Navbar from './components/Navbar';
 import styled from 'styled-components';
 import Project from './components/Project';
 import CreateProject from './components/CreateProject';
+import SplashLoading from 'components/base/SplashLoading';
+import { noop } from 'lodash';
+import projectListContainer from './ProjectListContainer';
 
-export default class ProjectList extends Component {
+class ProjectList extends Component {
+  static defaultProps = {
+    createProject: noop,
+    projects: [],
+    loading: false
+  };
+
   render() {
-    const { projects, createProject } = this.props;
+    const {
+      projects,
+      dispatchCreateProject,
+      loading,
+      dispatchDeleteProject,
+      action
+    } = this.props;
+    if (loading) return <SplashLoading />;
     return (
-      <Container>
-        {projects.map(projectId => (
-          <Project key={projectId} projectId={projectId} />
-        ))}
-        <CreateProject createProject={createProject} />
-      </Container>
+      <React.Fragment>
+        <Container>
+          {projects.map((projectId, index) => (
+            <Project
+              key={projectId}
+              projectId={projectId}
+              dispatchDeleteProject={dispatchDeleteProject}
+              index={index}
+              action={action}
+            />
+          ))}
+          {
+            <CreateProject
+              createProject={dispatchCreateProject}
+              index={projects.length}
+            />
+          }
+        </Container>
+      </React.Fragment>
     );
   }
 }
@@ -23,3 +51,5 @@ const Container = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
 `;
+
+export default projectListContainer(ProjectList);

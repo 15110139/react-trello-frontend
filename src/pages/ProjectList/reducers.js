@@ -8,7 +8,10 @@ import {
   createProject,
   createProjectFail,
   createProjectSuccess,
-  resetProject
+  resetProject,
+  deleteProject,
+  deleteProjectSuccess,
+  deleteProjectFail
 } from './actions';
 import ErrorState from 'services/models/ErrorState';
 import { Map, List } from 'immutable';
@@ -26,14 +29,16 @@ const projectReducers = [
     on: loadProjectsSuccess,
     reducer: (state, action) => {
       const { data } = action.payload;
+      console.log(data);
       return state.merge({
         action: action.type,
         data: data.reduce((accumulator, project) => {
           const { _id } = project;
+          console.log(_id);
           const immutableProject = new ProjectDataState(project);
-          return accumulator.get(_id)
-            ? accumulator.merge(_id, immutableProject)
-            : accumulator.set(_id, immutableProject);
+          return accumulator.set(_id, immutableProject);
+          // ? accumulator.merge(_id, immutableProject)
+          // : accumulator.set(_id, immutableProject);
         }, Map()),
         projects: List(data.map(project => project._id))
       });
@@ -87,6 +92,34 @@ const projectReducers = [
       return state.merge({
         action: action.type,
         error: new ErrorState(action.payload)
+      });
+    }
+  },
+  {
+    on: deleteProject,
+    reducer: (state, action) => {
+      return state.merge({
+        action: action.type
+      });
+    }
+  },
+  {
+    on: deleteProjectSuccess,
+    reducer: (state, action) => {
+      const { projectId, projectIndex } = action.payload;
+      return state
+        .merge({
+          action: action.type
+        })
+        .deleteIn(['data', projectId])
+        .deleteIn(['projects', projectIndex]);
+    }
+  },
+  {
+    on: deleteProjectFail,
+    reducer: (state, action) => {
+      return state.merge({
+        action: action.type
       });
     }
   }

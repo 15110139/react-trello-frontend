@@ -3,10 +3,15 @@ import styled from 'styled-components';
 import Button from '@material-ui/core/Button/Button';
 import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import { createListSuccess, createTask, createTaskSuccess } from '../actions';
+import { createTask, createTaskSuccess } from '../actions';
 import projectDetailContainer from '../projectDetailContainer';
+import { noop } from 'lodash';
 
 class AddCard extends Component {
+  static defaultProps = {
+    dispatchCreateTask: noop
+  };
+
   state = {
     toggle: false,
     task: ''
@@ -54,14 +59,22 @@ class AddCard extends Component {
     const { task } = this.state;
     return (
       <React.Fragment>
-        <form onSubmit={this.handleFormSubmit}>
+        <form
+          onSubmit={this.handleFormSubmit}
+          style={{
+            display: 'flex',
+            flexFlow: 'row wrap',
+            alignItems: 'center'
+          }}
+        >
           <input
             type={'text'}
+            autoFocus
             style={{
               fontSize: 14,
               paddingTop: 8,
               paddingBottom: 8,
-              float: 'left'
+              verticalAlign: 'middle'
             }}
             value={task}
             disabled={loading}
@@ -72,7 +85,6 @@ class AddCard extends Component {
             variant="contained"
             type={'submit'}
             disabled={loading || !task}
-            style={{ float: 'right' }}
           >
             {loading ? <CircularProgress size={18} /> : '+'}
           </Button>

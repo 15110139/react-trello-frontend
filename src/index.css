@@ -4,3 +4,21 @@ body {
   font-family: Helvetica Neue, Arial, Helvetica, sans-serif;
   font-size: 14px;
 }
+
+.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  transition: 0.5s ease;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  align-items: center;
+  justify-content: center;
+}

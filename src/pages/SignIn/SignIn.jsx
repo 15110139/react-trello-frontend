@@ -12,6 +12,9 @@ import { usernameValidator, passwordValidator } from 'utils/validators';
 import { Link } from 'react-router-dom';
 import { isEqual, get } from 'lodash';
 import PropTypes from 'prop-types';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import SplashLoading from '../../components/base/SplashLoading';
+import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 
 const styles = theme => ({
   layout: {
@@ -67,11 +70,13 @@ class SignIn extends React.Component {
             <Typography variant="headline">Sign In</Typography>
             <form className={classes.form} onSubmit={props.handleSubmit}>
               <Field
+                autoComplete="off"
                 title="Username or Email"
                 name="emailOrUserName"
                 component={TextInput}
                 validate={usernameValidator}
                 fullWidth
+                disabled={loading}
               />
               <Field
                 title="Password"
@@ -80,6 +85,7 @@ class SignIn extends React.Component {
                 component={TextInput}
                 validate={passwordValidator}
                 fullWidth
+                disabled={loading}
               />
               <Button
                 disabled={loading}
@@ -89,6 +95,9 @@ class SignIn extends React.Component {
                 color="primary"
                 className={classes.submit}
               >
+                {loading && (
+                  <CircularProgress size={14} style={{ marginRight: 4 }} />
+                )}
                 Sign in
               </Button>
             </form>

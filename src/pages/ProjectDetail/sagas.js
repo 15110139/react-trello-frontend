@@ -15,7 +15,12 @@ import {
   createTask,
   createTaskSuccess,
   createTaskFail,
-  revertMoveTask
+  deleteList,
+  deleteListSuccess,
+  deleteListFail,
+  deleteTaskSuccess,
+  deleteTaskFail,
+  deleteTask
 } from './actions';
 import { put, call } from 'redux-saga/effects';
 import { projectService } from 'services/projectService';
@@ -34,7 +39,11 @@ const loadProjectDetailSaga = {
       } = res;
       yield put(loadProjectDetailSuccess({ projectId, project, tasks, lists }));
     } catch (err) {
-      yield put(loadProjectDetailFail(err));
+      SnackbarManager.show({
+        message: 'Something went wrong, please try again later!'
+      });
+      const projectId = action.payload;
+      yield put(loadProjectDetailFail({ err, projectId }));
     }
   }
 };
@@ -46,6 +55,9 @@ const createListSaga = {
       const res = yield call(listService.createList, action.payload);
       yield put(createListSuccess(res.data));
     } catch (err) {
+      SnackbarManager.show({
+        message: 'Something went wrong, please try again later!'
+      });
       const { projectId } = action.payload;
       yield put(createListFail({ err, projectId }));
     }
@@ -59,6 +71,9 @@ const createTaskSaga = {
       const res = yield call(taskService.createTask, action.payload);
       yield put(createTaskSuccess(res.data));
     } catch (err) {
+      SnackbarManager.show({
+        message: 'Something went wrong, please try again later!'
+      });
       const { projectId } = action.payload;
       yield put(createTaskFail({ err, projectId }));
     }
@@ -69,16 +84,16 @@ const moveListSaga = {
   on: moveList,
   worker: function*(action) {
     try {
-      const { listId, srcIndex, desIndex } = action.payload;
-      const res = yield call(listService.moveList, {
+      const { listId, srcIndex, desIndex, projectId } = action.payload;
+      yield call(listService.moveList, {
         listId,
         position: desIndex
       });
-      yield put(moveListSuccess());
+      yield put(moveListSuccess({ projectId }));
     } catch (err) {
       const { listId, srcIndex, desIndex, projectId } = action.payload;
       SnackbarManager.show({
-        message: 'Fail to move list. Please try again!'
+        message: 'Something went wrong, please try again later!'
       });
       yield put(moveListFail({ err, projectId, listId, srcIndex, desIndex }));
     }
@@ -98,11 +113,11 @@ const moveTaskSaga = {
         desIndex
       } = action.payload;
       yield call(taskService.moveTask, {
-        listId: srcId,
+        listId: desId,
         taskId,
         position: desIndex
       });
-      yield put(moveTaskSuccess());
+      yield put(moveTaskSuccess({ projectId }));
     } catch (err) {
       const {
         projectId,
@@ -113,7 +128,7 @@ const moveTaskSaga = {
         desIndex
       } = action.payload;
       SnackbarManager.show({
-        message: 'Fail to move task. Please try again!'
+        message: 'Something went wrong, please try again later!'
       });
       yield put(
         moveTaskFail({
@@ -130,11 +145,46 @@ const moveTaskSaga = {
   }
 };
 
+const deleteListSaga = {
+  on: deleteList,
+  worker: function*(action) {
+    try {
+      const { projectId, listId, listIndex } = action.payload;
+      yield call(listService.deleteList, listId);
+      yield put(deleteListSuccess({ projectId, listId, listIndex }));
+    } catch (err) {
+      SnackbarManager.show({
+        message: 'Something went wrong, please try again later!'
+      });
+      const { projectId } = action.payload;
+      yield put(deleteListFail({ err, projectId }));
+    }
+  }
+};
+
+const deleteTaskSaga = {
+  on: deleteTask,
+  worker: function*(action) {
+    try {
+      const { projectId, taskId, taskIndex, listId } = action.payload;
+      yield call(taskService.deleteTask, taskId);
+      yield put(deleteTaskSuccess({ projectId, taskId, taskIndex, listId }));
+    } catch (err) {
+      SnackbarManager.show({
+        message: 'Something went wrong, please try again later!'
+      });
+      const { projectId } = action.payload;
+      yield put(deleteTaskFail({ err, projectId }));
+    }
+  }
+};
+
 export default createSagas([
   loadProjectDetailSaga,
   createListSaga,
   createTaskSaga,
   moveListSaga,
   moveTaskSaga,
-  moveListSaga
+  deleteListSaga,
+  deleteTaskSaga
 ]);

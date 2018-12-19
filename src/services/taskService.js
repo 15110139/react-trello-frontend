@@ -14,6 +14,10 @@ class TaskService extends RestAPIClient {
   moveTask = body => {
     return this.put('/moveTask', body);
   };
+
+  deleteTask = taskId => {
+    return this.delete(`/removeTask/${taskId}`);
+  };
 }
 
 export const taskService = new TaskService();

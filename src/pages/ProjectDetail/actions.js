@@ -1,51 +1,43 @@
 import { createAsyncAction, createAction } from 'utils/redux';
 
-const {
+export const {
   loadProjectDetail,
   loadProjectDetailSuccess,
   loadProjectDetailFail
 } = createAsyncAction('loadProjectDetail', 'LOAD_PROJECT_DETAIL');
 
-const { createList, createListSuccess, createListFail } = createAsyncAction(
-  'createList',
-  'CREATE_LIST'
-);
+export const {
+  createList,
+  createListSuccess,
+  createListFail
+} = createAsyncAction('createList', 'CREATE_LIST');
 
-const { createTask, createTaskSuccess, createTaskFail } = createAsyncAction(
-  'createTask',
-  'CREATE_TASK'
-);
+export const {
+  createTask,
+  createTaskSuccess,
+  createTaskFail
+} = createAsyncAction('createTask', 'CREATE_TASK');
 
-const { moveTask, moveTaskSuccess, moveTaskFail } = createAsyncAction(
+export const { moveTask, moveTaskSuccess, moveTaskFail } = createAsyncAction(
   'moveTask',
   'MOVE_TASK'
 );
 
-const revertMoveTask = createAction('REVERT_MOVE_TASK');
-
-const { moveList, moveListSuccess, moveListFail } = createAsyncAction(
+export const { moveList, moveListSuccess, moveListFail } = createAsyncAction(
   'moveList',
   'MOVE_LIST'
 );
 
-const resetProjectDetail = createAction('RESET_PROJECT_DETAIL');
+export const {
+  deleteList,
+  deleteListSuccess,
+  deleteListFail
+} = createAsyncAction('deleteList', 'DELETE_LIST');
 
-export {
-  loadProjectDetail,
-  loadProjectDetailFail,
-  loadProjectDetailSuccess,
-  moveList,
-  moveListFail,
-  moveListSuccess,
-  moveTask,
-  moveTaskFail,
-  moveTaskSuccess,
-  resetProjectDetail,
-  createList,
-  createListSuccess,
-  createListFail,
-  createTask,
-  createTaskSuccess,
-  createTaskFail,
-  revertMoveTask
-};
+export const {
+  deleteTask,
+  deleteTaskSuccess,
+  deleteTaskFail
+} = createAsyncAction('deleteTask', 'DELETE_TASK');
+
+export const resetProjectDetail = createAction('RESET_PROJECT_DETAIL');

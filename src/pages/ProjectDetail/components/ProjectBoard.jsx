@@ -5,8 +5,7 @@ import { DndContext } from '../constants';
 import List from './List';
 import AddList from './AddList';
 import { isArray, noop, compact, isEmpty } from 'lodash';
-import SnackbarManager from 'components/base/SnackbarManager';
-import { moveListFail } from '../actions';
+import './style.css';
 
 const Container = styled.div`
   display: flex;
@@ -68,37 +67,41 @@ class ProjectBoard extends React.Component {
   };
 
   render() {
-    const { listIds, projectId } = this.props;
+    const { listIds, projectId, action } = this.props;
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable
-          droppableId="all-list"
-          type={DndContext.LIST}
-          direction="horizontal"
-          onDragEnd={this.onDragEnd}
-        >
-          {(provided, snapshot) => (
-            <React.Fragment>
-              <Container
-                innerRef={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {isArray(listIds) &&
-                  compact(listIds).map((listId, index) => (
-                    <List
-                      key={listId}
-                      listId={listId}
-                      projectId={projectId}
-                      index={index}
-                    />
-                  ))}
-                {provided.placeholder}
-                <AddList projectId={projectId} />
-              </Container>
-            </React.Fragment>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <React.Fragment>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <Droppable
+            droppableId="all-list"
+            type={DndContext.LIST}
+            direction="horizontal"
+            onDragEnd={this.onDragEnd}
+          >
+            {(provided, snapshot) => (
+              <React.Fragment>
+                <Container
+                  innerRef={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {isArray(listIds) &&
+                    compact(listIds).map((listId, index) => (
+                      <List
+                        isDragging={snapshot.isDragging}
+                        key={listId}
+                        listId={listId}
+                        projectId={projectId}
+                        index={index}
+                        action={action}
+                      />
+                    ))}
+                  {provided.placeholder}
+                  <AddList projectId={projectId} />
+                </Container>
+              </React.Fragment>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </React.Fragment>
     );
   }
 }

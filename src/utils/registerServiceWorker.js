@@ -48,6 +48,14 @@ export default function register() {
         // Is not local host. Just register service worker
         registerValidSW(swUrl);
       }
+      window.addEventListener('fetch', function(event) {
+        console.log(event.request.url);
+        event.respondWith(
+          caches.match(event.request).then(function(response) {
+            return response || fetch(event.request);
+          })
+        );
+      });
     });
   }
 }

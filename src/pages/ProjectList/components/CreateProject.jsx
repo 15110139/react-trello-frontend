@@ -7,10 +7,21 @@ import TextInput from 'components/Formik/TextInput';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { projectsDataSelector, actionSelector } from '../selectors';
-import { createProject, createProjectSuccess, resetProject } from '../actions';
+import {
+  createProject,
+  createProjectFail,
+  createProjectSuccess,
+  resetProject
+} from '../actions';
 import { toJS } from 'utils/toJS';
-import { findKey, isEmpty } from 'lodash';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { findKey, isEqual } from 'lodash';
+import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
+import Grow from '@material-ui/core/Grow/Grow';
+import Modal from 'components/base/Modal';
+import DialogContent from '@material-ui/core/DialogContent/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions/DialogActions';
+import IconButton from '@material-ui/core/IconButton/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 
 const styles = {
   card: {
@@ -22,13 +33,19 @@ const styles = {
     alignItems: 'center'
   },
   form: {
-    display: 'flex'
+    display: 'inline'
   },
   input: {
-    flexGrow: 0.8
+    width: 120,
+    marginRight: 10,
+    float: 'left'
   },
   button: {
-    flexGrow: 0.2
+    'box-shadow': `
+    0px 1px 3px 0px rgba(0, 0, 0, 0.2), 
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 
+    0px 2px 1px -1px rgba(0, 0, 0, 0.12)
+    `
   }
 };
 
@@ -39,26 +56,55 @@ const nameValidate = (value, projects) => {
 };
 
 class CreateProject extends React.Component {
+  state = {
+    show: false
+  };
+
+  handleOpen = () => this.setState({ show: true });
+
+  handleClose = () => this.setState({ show: false });
+
   FormComponent = props => {
     this.form = props;
-    const { projects, classes } = this.props;
+    const { projects } = this.props;
+    const loading = this.isLoading();
+
     return (
-      <React.Fragment>
-        <form className={classes.form} onSubmit={props.handleSubmit}>
+      <form onSubmit={props.handleSubmit}>
+        <DialogContent>
           <Field
-            className={classes.input}
+            autoFocus
+            margin="dense"
             validate={value => nameValidate(value, projects)}
             name="name"
             title="Project"
-            placeholder="Project name"
             component={TextInput}
-            floatingLabel={false}
+            autoComplete={'off'}
+            fullWidth
           />
-          <Button className={classes.button} type="submit" color="primary">
-            Add
+        </DialogContent>
+        <DialogActions>
+          <Button
+            style={{ width: 80 }}
+            onClick={this.handleClose}
+            color="primary"
+            disabled={loading}
+          >
+            Cancel
           </Button>
-        </form>
-      </React.Fragment>
+          <Button
+            style={{ width: 80 }}
+            onClick={props.handleSubmit}
+            color="primary"
+            disabled={loading}
+          >
+            {loading && (
+              <CircularProgress size={14} style={{ marginRight: 6 }} />
+            )}
+            OK
+          </Button>
+        </DialogActions>
+      </form>
     );
   };
 
@@ -66,41 +112,56 @@ class CreateProject extends React.Component {
     this.props.dispatchCreateProject(values);
   };
 
-  handleClickAway = () => {
-    const { touched, values, errors } = this.form;
-    if (isEmpty(touched)) return;
-    else if (!isEmpty(errors)) {
-    } else if (!isEmpty(values.name)) {
-      this.handleSubmit(values);
-    }
-  };
+  isLoading = () => createProject.is(this.props.action);
 
-  componentDidUpdate() {
-    const { resetForm } = this.form;
+  componentDidUpdate(prevProps) {
     const { action, dispatchResetProject } = this.props;
-    if (createProjectSuccess.is(action)) {
-      console.log('here');
-      resetForm();
-      dispatchResetProject();
+    if (!isEqual(action, prevProps.action)) {
+      if (createProjectSuccess.is(action) || createProjectFail.is(action)) {
+        if (this.state.show) {
+          this.handleClose();
+          dispatchResetProject();
+        }
+      }
     }
   }
 
-  render() {
-    const { classes } = this.props;
+  renderModal = () => {
+    const { show } = this.state;
+    const loading = this.isLoading();
     return (
-      <ClickAwayListener onClickAway={this.handleClickAway}>
-        <Card className={classes.card}>
-          <CardContent>
-            <Formik
-              initialValues={{
-                name: ''
-              }}
-              render={this.FormComponent}
-              onSubmit={this.handleSubmit}
-            />
-          </CardContent>
-        </Card>
-      </ClickAwayListener>
+      <Modal
+        fullWidth
+        show={show}
+        handleClose={this.handleClose}
+        title={'Create Project'}
+        content={
+          <Formik
+            initialValues={{
+              name: ''
+            }}
+            render={this.FormComponent}
+            onSubmit={this.handleSubmit}
+          />
+        }
+      />
+    );
+  };
+
+  render() {
+    const { classes, index } = this.props;
+    return (
+      <React.Fragment>
+        {this.renderModal()}
+        <Grow in={true} timeout={100 * index}>
+          <Button
+            className={`${classes.card} ${classes.button}`}
+            onClick={this.handleOpen}
+          >
+            <AddIcon />
+          </Button>
+        </Grow>
+      </React.Fragment>
     );
   }
 }

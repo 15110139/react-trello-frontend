@@ -16,6 +16,10 @@ class ProjectService extends RestAPIClient {
   getProjectDetail = projectId => {
     return this.get(`/getListAndTaskByProjectId/${projectId}`);
   };
+
+  deleteProject = projectId => {
+    return this.delete(`/removeProject/${projectId}`);
+  };
 }
 
 export const projectService = new ProjectService();

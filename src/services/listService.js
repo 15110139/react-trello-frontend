@@ -13,6 +13,10 @@ class ListService extends RestAPIClient {
   moveList = body => {
     return this.put('/moveList', body);
   };
+
+  deleteList = listId => {
+    return this.delete(`/removeList/${listId}`);
+  };
 }
 
 export const listService = new ListService();

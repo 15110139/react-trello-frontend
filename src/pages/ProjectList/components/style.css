@@ -1,0 +1,7 @@
+.more-icon {
+  display: none !important;
+}
+
+.card:hover .more-icon {
+  display: block !important;
+}
