@@ -12,8 +12,8 @@ import { usernameValidator, passwordValidator } from 'utils/validators';
 import { Link } from 'react-router-dom';
 import { isEqual, get } from 'lodash';
 import PropTypes from 'prop-types';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import SplashLoading from '../../components/base/SplashLoading';
+// import LinearProgress from '@material-ui/core/LinearProgress';
+// import SplashLoading from '../../components/base/SplashLoading';
 import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 
 const styles = theme => ({

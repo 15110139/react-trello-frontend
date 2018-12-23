@@ -23,6 +23,7 @@ import ConfirmDialogManager from 'components/base/ConfirmDialogManager';
 import Grow from '@material-ui/core/Grow/Grow';
 import { createProjectSuccess } from '../actions';
 import './style.css';
+import AddMemberModal from './AddMemberModal/AddMemberModal';
 
 const styles = {
   link: {
@@ -52,7 +53,8 @@ const styles = {
 class Project extends React.PureComponent {
   state = {
     anchorEl: null,
-    showMoreButton: false
+    showMoreButton: false,
+    openAddMemberModal: false
   };
 
   handleClick = event => {
@@ -100,7 +102,7 @@ class Project extends React.PureComponent {
         open={Boolean(anchorEl)}
         onClose={this.handleClose}
       >
-        <MenuItem style={styles.menuItem}>
+        <MenuItem style={styles.menuItem} onClick={this.handleModalOpen}>
           <ListItemIcon>
             <PlusIcon />
           </ListItemIcon>
@@ -122,6 +124,23 @@ class Project extends React.PureComponent {
     );
   };
 
+  handleUserPress = user => {};
+
+  handleModalOpen = () => this.setState({ openAddMemberModal: true });
+
+  handleModalClose = () => this.setState({ openAddMemberModal: false });
+
+  renderModal = () => {
+    const { openAddMemberModal } = this.state;
+    return (
+      <AddMemberModal
+        open={openAddMemberModal}
+        onUserPress={this.handleUserPress}
+        onClose={this.handleModalClose}
+      />
+    );
+  };
+
   render() {
     const { project = {}, index, action } = this.props;
     const { _id, name, members } = project;
@@ -130,6 +149,7 @@ class Project extends React.PureComponent {
     return (
       <React.Fragment>
         {this.renderMenu()}
+        {this.renderModal()}
         <Grow
           in={true}
           timeout={createProjectSuccess.is(action) ? 100 : 100 * index}

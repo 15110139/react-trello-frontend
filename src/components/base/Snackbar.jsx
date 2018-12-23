@@ -10,19 +10,19 @@ import WarningIcon from '@material-ui/icons/Warning';
 import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
 
-const backgroundColorMap = {
-  error: themeVariables.palette.error.dark,
-  success: green[600],
-  info: themeVariables.palette.primary.dark,
-  warning: amber[700]
-};
-
-const variantIcon = {
-  success: CheckCircleIcon,
-  warning: WarningIcon,
-  error: ErrorIcon,
-  info: InfoIcon
-};
+// const backgroundColorMap = {
+//   error: themeVariables.palette.error.dark,
+//   success: green[600],
+//   info: themeVariables.palette.primary.dark,
+//   warning: amber[700]
+// };
+//
+// const variantIcon = {
+//   success: CheckCircleIcon,
+//   warning: WarningIcon,
+//   error: ErrorIcon,
+//   info: InfoIcon
+// };
 
 class Snackbar extends React.Component {
   state = {

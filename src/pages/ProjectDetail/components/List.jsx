@@ -222,8 +222,8 @@ export const Title = styled.div`
   padding: 10px 10px 0 20px;
   margin: 5px 5px 0 5px;
   font-weight: bold;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 `;
 

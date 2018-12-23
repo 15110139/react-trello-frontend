@@ -24,6 +24,11 @@ const {
   deleteProjectFail
 } = createAsyncAction('deleteProject', 'DELETE_PROJECT');
 
+const { addMember, addMemberSuccess, addMemberFail } = createAsyncAction(
+  'addMember',
+  'ADD_MEMBER'
+);
+
 const resetProject = createAction('RESET_PROJECT');
 
 export {
@@ -39,5 +44,8 @@ export {
   deleteProjectFail,
   updateProject,
   updateProjectSuccess,
-  updateProjectFail
+  updateProjectFail,
+  addMember,
+  addMemberSuccess,
+  addMemberFail
 };

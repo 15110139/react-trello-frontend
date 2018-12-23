@@ -8,7 +8,7 @@ export class TaskDataState extends Record({
   listId: '',
   description: '',
   createdAt: '',
-  member: List(),
+  members: List(),
   label: List(),
   userId: ''
 }) {}
@@ -18,7 +18,7 @@ export class ListDataState extends Record({
   name: '',
   backgroundUrl: '',
   createdAt: '',
-  member: List(),
+  members: List(),
   userId: '',
   tasks: List(),
   position: ''

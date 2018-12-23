@@ -8,7 +8,10 @@ import {
   createProjectSuccess,
   deleteProject,
   deleteProjectSuccess,
-  deleteProjectFail
+  deleteProjectFail,
+  addMember,
+  addMemberSuccess,
+  addMemberFail
 } from './actions';
 import { put, call } from 'redux-saga/effects';
 import { projectService } from 'services/projectService';
@@ -64,8 +67,25 @@ const deleteProjectsSaga = {
   }
 };
 
+const addMemberSaga = {
+  on: addMember,
+  worker: function*(action) {
+    try {
+      const { projectId, user, projectIndex } = action.payload;
+      yield call(projectService.addMember, { projectId, userId: user._id });
+      yield put(addMemberSuccess({ projectId, projectIndex }));
+    } catch (err) {
+      SnackbarManager.show({
+        message: 'Something went wrong, please try again later!'
+      });
+      yield put(addMemberFail(err));
+    }
+  }
+};
+
 export default createSagas([
   loadProjectsSaga,
   createProjectsSaga,
-  deleteProjectsSaga
+  deleteProjectsSaga,
+  addMemberSaga
 ]);

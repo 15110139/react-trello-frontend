@@ -20,6 +20,10 @@ class ProjectService extends RestAPIClient {
   deleteProject = projectId => {
     return this.delete(`/removeProject/${projectId}`);
   };
+
+  addMember = body => {
+    return this.put(`/addMember`, body);
+  };
 }
 
 export const projectService = new ProjectService();

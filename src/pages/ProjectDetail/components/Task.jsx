@@ -149,6 +149,7 @@ class Task extends React.PureComponent {
       taskData: { _id, name },
       index
     } = this.props;
+    console.log(_id);
     const { anchorEl } = this.state;
     return (
       <React.Fragment>

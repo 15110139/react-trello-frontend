@@ -74,6 +74,7 @@ class AddCard extends Component {
               fontSize: 14,
               paddingTop: 8,
               paddingBottom: 8,
+              border: 'none',
               verticalAlign: 'middle'
             }}
             value={task}
@@ -108,6 +109,8 @@ class AddCard extends Component {
 const Container = styled.div`
   margin: 0 5px;
   padding: 10px 10px 10px 20px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   background-color: #dfe3e6;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px -1px rgba(0, 0, 0, 0.1);
   cursor: pointer;

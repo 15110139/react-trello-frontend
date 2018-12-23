@@ -16,8 +16,11 @@ import blue from '@material-ui/core/colors/blue';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+import userSearchContainer from 'components/SearchUser';
+import DialogContent from '@material-ui/core/DialogContent';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { noop, isEmpty, debounce } from 'lodash';
 
-const emails = ['username@gmail.com', 'user02@gmail.com'];
 const styles = theme => ({
   avatar: {
     backgroundColor: blue[100],
@@ -30,16 +33,16 @@ const styles = theme => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25)
     },
-    marginRight: theme.spacing.unit * 2,
-    marginLeft: 0,
+    // marginRight: theme.spacing.unit * 2,
+    // marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing.unit * 3,
+      // marginLeft: theme.spacing.unit * 3,
       width: 'auto'
     }
   },
   searchIcon: {
-    width: theme.spacing.unit * 9,
+    width: theme.spacing.unit * 5,
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
@@ -48,68 +51,157 @@ const styles = theme => ({
     justifyContent: 'center'
   },
   inputRoot: {
-    color: 'inherit',
+    backgroundColor: '#E0E0E0',
     width: '100%'
+  },
+  inputInput: {
+    paddingTop: theme.spacing.unit,
+    paddingRight: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit,
+    paddingLeft: theme.spacing.unit * 5,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: 200
+    }
   }
 });
 
 class AddMemberModal extends React.Component {
-  handleClose = () => {
-    this.props.onClose(this.props.selectedValue);
+  constructor(props) {
+    super(props);
+    this.state = {
+      textSearch: ''
+    };
+    this.handleSearch = debounce(this.handleSearch, 500, {
+      leading: false,
+      trailing: true
+    });
+  }
+
+  componentDidMount() {
+    const { onSearch } = this.props;
+    onSearch();
+  }
+
+  onSearchTextChange = e =>
+    this.setState({ textSearch: e.target.value }, () =>
+      this.handleSearch(this.state.textSearch)
+    );
+
+  handleSearch = textSearch => {
+    this.props.onSearch({
+      textSearch,
+      pageSize: 10,
+      pageIndex: 0
+    });
   };
 
-  handleListItemClick = value => {
-    this.props.onClose(value);
+  renderSpinner = () => {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          height: '100%'
+        }}
+      >
+        <CircularProgress size={30} />
+      </div>
+    );
+  };
+
+  renderNotFound = () => {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          height: '100%'
+        }}
+      >
+        No result found
+      </div>
+    );
+  };
+
+  renderUserList = () => {
+    const {
+      users = [],
+      onUserPress = noop,
+      isSearching = false,
+      classes
+    } = this.props;
+    if (isSearching) return this.renderSpinner();
+    if (!isSearching && isEmpty(users)) return this.renderNotFound();
+    return (
+      <List>
+        {users.map(user => (
+          <ListItem button onClick={() => onUserPress(user)} key={user._id}>
+            <ListItemAvatar>
+              <Avatar className={classes.avatar}>
+                <PersonIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primary={`${user.firstName} ${user.lastName} (${user.email})`}
+            />
+          </ListItem>
+        ))}
+      </List>
+    );
   };
 
   render() {
-    const { classes, onClose, selectedValue, ...other } = this.props;
-
+    const {
+      classes,
+      onClose = noop,
+      users,
+      open,
+      isSearching,
+      onUserPress = noop
+    } = this.props;
+    const { textSearch } = this.state;
     return (
       <Dialog
-        onClose={this.handleClose}
+        onClose={onClose}
         aria-labelledby="simple-dialog-title"
-        {...other}
+        open={open}
+        scroll={'paper'}
+        fullWidth
       >
         <DialogTitle id="simple-dialog-title">Select user</DialogTitle>
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
+        <DialogContent style={{ height: 500 }}>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              value={textSearch}
+              onChange={this.onSearchTextChange}
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput
+              }}
+            />
           </div>
-          <InputBase placeholder="Search…" classes={classes.inputRoot} />
-        </div>
-        <div>
-          <List>
-            {emails.map(email => (
-              <ListItem
-                button
-                onClick={() => this.handleListItemClick(email)}
-                key={email}
-              >
-                <ListItemAvatar>
-                  <Avatar className={classes.avatar}>
-                    <PersonIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={email} />
-              </ListItem>
-            ))}
-            <ListItem
-              button
-              onClick={() => this.handleListItemClick('addAccount')}
-            >
-              <ListItemAvatar>
-                <Avatar>
-                  <AddIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="add account" />
-            </ListItem>
-          </List>
-        </div>
+          <div
+            style={{
+              width: '100%',
+              height: '90%'
+            }}
+          >
+            {this.renderUserList()}
+          </div>
+        </DialogContent>
       </Dialog>
     );
   }
 }
 
-export default withStyles(styles)(AddMemberModal);
+export default userSearchContainer(withStyles(styles)(AddMemberModal));

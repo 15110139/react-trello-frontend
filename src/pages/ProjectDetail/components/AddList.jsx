@@ -65,7 +65,8 @@ class AddList extends Component {
               style={{
                 fontSize: 14,
                 paddingTop: 8,
-                paddingBottom: 8
+                paddingBottom: 8,
+                border: 'none'
               }}
               value={list}
               disabled={loading}
@@ -93,6 +94,7 @@ const Container = styled.div`
   height: 38px;
   padding: 10px;
   margin: 5px;
+  border-radius: 5px;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1),
     0 1px 1px -1px rgba(0, 0, 0, 0.1);
   user-select: none;
