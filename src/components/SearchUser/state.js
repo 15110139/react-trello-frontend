@@ -10,9 +10,9 @@ export class SearchUserDataState extends Record({
 }) {}
 
 export class SearchUserRequest extends Record({
-  textSearch: '',
-  pageSize: 10,
-  pageIndex: 0
+  textSearch: ''
+  // pageSize: 10,
+  // pageIndex: 0
 }) {}
 
 export class SearchUserState extends Record({

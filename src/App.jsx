@@ -8,6 +8,7 @@ import ConfirmDialogManager from 'components/base/ConfirmDialogManager';
 import Snackbar from './components/base/Snackbar';
 import ConfirmDialog from './components/base/ConfirmDialog';
 import SplashLoading from './components/base/SplashLoading';
+import WebFont from 'webfontloader';
 
 class App extends React.Component {
   constructor(props) {
@@ -19,13 +20,22 @@ class App extends React.Component {
     this.confirmDialog = null;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    await this.initFont();
     setTimeout(() => {
       SnackbarManager.register(this.snackBar.current);
       ConfirmDialogManager.register(this.confirmDialog);
       this.setState({ isReady: true });
     }, 0);
   }
+
+  initFont = async () => {
+    await WebFont.load({
+      google: {
+        families: ['Roboto:300,400,500', 'Material+Icons']
+      }
+    });
+  };
 
   render() {
     const { isReady } = this.state;

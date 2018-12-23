@@ -11,7 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Menu from '@material-ui/core/Menu/Menu';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
-import ListItemText from '@material-ui/core/es/ListItemText/ListItemText';
+import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Modal from '../../../components/base/Modal';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
@@ -149,7 +149,6 @@ class Task extends React.PureComponent {
       taskData: { _id, name },
       index
     } = this.props;
-    console.log(_id);
     const { anchorEl } = this.state;
     return (
       <React.Fragment>

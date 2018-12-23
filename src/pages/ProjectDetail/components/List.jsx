@@ -14,7 +14,7 @@ import Menu from '@material-ui/core/Menu/Menu';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
 import PlusIcon from '@material-ui/core/SvgIcon/SvgIcon';
-import ListItemText from '@material-ui/core/es/ListItemText/ListItemText';
+import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import themeVariables from '../../../theme';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ConfirmDialogManager from 'components/base/ConfirmDialogManager';

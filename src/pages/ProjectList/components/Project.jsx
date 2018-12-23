@@ -13,7 +13,7 @@ import { get, noop } from 'lodash';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
-import ListItemText from '@material-ui/core/es/ListItemText/ListItemText';
+import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import PlusIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -149,7 +149,7 @@ class Project extends React.PureComponent {
     return (
       <React.Fragment>
         {this.renderMenu()}
-        {this.renderModal()}
+        {/*{this.renderModal()}*/}
         <Grow
           in={true}
           timeout={createProjectSuccess.is(action) ? 100 : 100 * index}

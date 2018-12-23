@@ -11,7 +11,6 @@ const signInSaga = {
   worker: function*(action) {
     try {
       const res = yield call(authService.signIn, action.payload);
-      console.log(res);
       yield call(storage.set, 'USER_CREDENTIAL', {
         ...res.data,
         createdAt: moment()
@@ -19,7 +18,6 @@ const signInSaga = {
       yield put(signInSuccess());
       yield put(push('/projects'));
     } catch (err) {
-      console.log(err);
       yield put(signInFail(err));
     }
   }

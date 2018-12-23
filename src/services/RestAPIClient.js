@@ -14,7 +14,6 @@ class RestAPIClient {
         Object.keys(payload).forEach(key =>
           url.searchParams.append(key, payload[key])
         );
-      console.log(storage.get('USER_CREDENTIAL').token);
       let options = {
         method,
         headers: {
@@ -25,7 +24,6 @@ class RestAPIClient {
       if (method === 'POST' || method === 'PUT')
         options['body'] = JSON.stringify(payload);
       const res = await fetch(url, options);
-
       if (res.status > 200) {
         const json = await res.json();
         if (json.status === 'INVALID_TOKEN')

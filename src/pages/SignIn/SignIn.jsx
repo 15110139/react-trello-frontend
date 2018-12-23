@@ -50,7 +50,7 @@ const styles = theme => ({
   },
   textContainer: {
     textAlign: 'center',
-    color: 'grey',
+    color: 'black',
     fontSize: 14
   }
 });
@@ -73,6 +73,7 @@ class SignIn extends React.Component {
                 autoComplete="off"
                 title="Username or Email"
                 name="emailOrUserName"
+                id="emailOrUserName"
                 component={TextInput}
                 validate={usernameValidator}
                 fullWidth
@@ -81,6 +82,7 @@ class SignIn extends React.Component {
               <Field
                 title="Password"
                 name="password"
+                id="password"
                 type="password"
                 component={TextInput}
                 validate={passwordValidator}
@@ -102,8 +104,7 @@ class SignIn extends React.Component {
               </Button>
             </form>
             <div className={classes.textContainer}>
-              Don't have account? Click <Link to="sign-up">here</Link> to create
-              one.
+              Don't have account? <Link to="sign-up">Sign Up</Link> here.
             </div>
           </Paper>
         </main>

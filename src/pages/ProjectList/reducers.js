@@ -29,12 +29,10 @@ const projectReducers = [
     on: loadProjectsSuccess,
     reducer: (state, action) => {
       const { data } = action.payload;
-      console.log(data);
       return state.merge({
         action: action.type,
         data: data.reduce((accumulator, project) => {
           const { _id } = project;
-          console.log(_id);
           const immutableProject = new ProjectDataState(project);
           return accumulator.set(_id, immutableProject);
           // ? accumulator.merge(_id, immutableProject)

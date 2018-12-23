@@ -2,7 +2,6 @@ import { isEmpty, noop, get } from 'lodash';
 
 class SnackbarManager {
   register = snackBar => {
-    console.log('register');
     if (isEmpty(this.snackBar)) this.snackBar = snackBar;
   };
 
